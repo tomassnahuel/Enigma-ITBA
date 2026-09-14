@@ -1,0 +1,9 @@
+{
+  "algoritmo": "atbash",
+  "clave": "N/A (Sustitución Reflexiva)",
+  "parametros": {
+    "invertirNumeros": false,
+    "clave": "N/A (Sustitución Reflexiva)"
+  },
+  "texto_encriptado": "sloz sloz\nqwzhqwqzh"
+}
