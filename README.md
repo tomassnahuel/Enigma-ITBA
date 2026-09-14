@@ -4,6 +4,16 @@ Una aplicación educacional interactiva de línea de comandos (CLI) desarrollada
 
 ---
 
+## 📋 Índice
+
+- [1. Arquitectura e Instalación](#1-arquitectura-e-instalación)
+- [2. Instrucciones de Ejecución](#2-instrucciones-de-ejecución)
+- [3. Explicación de los 5 Algoritmos Parametrizables](#3-explicación-de-los-5-algoritmos-parametrizables)
+- [4. Estructura del Archivo de Salida](#4-estructura-del-archivo-de-salida)
+- [5. Manual de Uso para el Usuario](#5-manual-de-uso-para-el-usuario)
+
+---
+
 ## 1. Arquitectura e Instalación
 
 ### Requisitos Previos
@@ -151,7 +161,7 @@ Seleccione una opción:
    - Ingresa el nombre o ruta del archivo JSON de destino (ejemplo: `mi_mensaje.json`).
    - Si no ingresas un nombre y presionas `Enter`, se utilizará el nombre por defecto `mensaje_encriptado.json`.
 6. **Confirmación**:
-   La aplicación procesará la entrada y mostrará la confirmación de la encriptación junto con la ruta del archivo generado.
+   La aplicación procesará la entrada y mostrará la confirmación de la encriptación junto com la ruta del archivo generado.
 
 ---
 
