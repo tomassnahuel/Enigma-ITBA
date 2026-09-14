@@ -14,7 +14,7 @@ Una aplicación educacional interactiva de línea de comandos (CLI) desarrollada
 ```text
 mini-enigma/
 ├── package.json
-├── README.md
+├── README.md                 # Documentación completa del proyecto
 ├── index.js                  # Punto de entrada principal
 ├── test.js                   # Suite de pruebas automatizadas
 └── src/
@@ -98,3 +98,81 @@ Cuando se completa la encriptación, el sistema genera un archivo estructurado e
 ```
 
 > **Nota**: El texto plano original NUNCA se almacena dentro del archivo JSON. La información guardada es suficiente para realizar el proceso inverso de forma automática al seleccionar la opción de desencriptación.
+
+---
+
+## 5. Manual de Uso para el Usuario
+
+Este apartado sirve como guía paso a paso para interactuar con la aplicación desde la consola.
+
+### Paso 1: Iniciar la Aplicación
+
+Abre una terminal en la carpeta del proyecto y ejecuta:
+
+```bash
+node index.js
+```
+
+Verás el menú principal interactivo:
+
+```text
+==================================================
+             MINI ENIGMA - TERMINAL CLI           
+==================================================
+1. Encriptar texto
+2. Desencriptar archivo
+3. Salir
+==================================================
+Seleccione una opción:
+```
+
+---
+
+### Paso 2: Flujo de Encriptación (Opción 1)
+
+1. **Seleccionar Opción 1**: Escribe `1` y presiona `Enter`.
+2. **Ingresar Texto Plano**:
+   - Puedes escribir una sola línea o pegar un bloque de texto multilínea (con acentos, números, signos o la letra `ñ`).
+   - Para finalizar y enviar el texto a encriptar, presiona `Enter` en una línea vacía.
+3. **Seleccionar el Algoritmo**:
+   Elige uno de los 5 algoritmos disponibles ingresando su número (`1` a `5`):
+   - `1`: César
+   - `2`: Vigenère
+   - `3`: Atbash
+   - `4`: Transposición
+   - `5`: XOR
+4. **Ingresar Parámetros / Clave**:
+   - **César**: Ingresa un número entero para el desplazamiento (ejemplo: `3`).
+   - **Vigenère**: Ingresa la palabra clave (ejemplo: `CASA` o `SECRETO`).
+   - **Atbash**: Responde `si` o `no` a la pregunta de si deseas invertir también los números (0-9).
+   - **Transposición**: Ingresa la cantidad de columnas para la matriz (número entero $\ge 2$, ejemplo: `5`).
+   - **XOR**: Ingresa una clave de texto (ejemplo: `secreto123`).
+5. **Especificar Archivo de Salida**:
+   - Ingresa el nombre o ruta del archivo JSON de destino (ejemplo: `mi_mensaje.json`).
+   - Si no ingresas un nombre y presionas `Enter`, se utilizará el nombre por defecto `mensaje_encriptado.json`.
+6. **Confirmación**:
+   La aplicación procesará la entrada y mostrará la confirmación de la encriptación junto con la ruta del archivo generado.
+
+---
+
+### Paso 3: Flujo de Desencriptación (Opción 2)
+
+1. **Seleccionar Opción 2**: Escribe `2` y presiona `Enter`.
+2. **Indicar la Ruta del Archivo**:
+   - Ingresa la ruta del archivo `.json` previamente generado (ejemplo: `mi_mensaje.json` o `mensaje_encriptado.json`).
+   - Si presionas `Enter` directamente, buscará por defecto el archivo `mensaje_encriptado.json`.
+3. **Resultado**:
+   El sistema leerá el archivo, identificará automáticamente el algoritmo y sus parámetros, aplicará la operación inversa y mostrará el **texto plano original exacto** en la consola.
+
+---
+
+### Paso 4: Salir (Opción 3)
+
+Escribe `3` en el menú principal para cerrar la aplicación ordenadamente.
+
+---
+
+### Manejo de Errores y Recomendaciones
+
+- **Entradas Vacías o Inválidas**: Si ingresas un parámetro no válido (como caracteres alfabéticos en el número de columnas o desplazamiento), la aplicación mostrará un mensaje de error explicativo y te devolverá al menú principal sin cerrarse.
+- **Archivos Inexistentes o Corruptos**: Si indicas una ruta de archivo que no existe o el contenido JSON no tiene la estructura adecuada, la aplicación te informará el motivo del error.
