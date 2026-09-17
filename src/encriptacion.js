@@ -13,10 +13,10 @@ const { guardarArchivo } = require('./archivo');
  * @param {string} opciones.algoritmoKey - Identificador o clave del algoritmo (e.g. 'cesar', 'vigenere', 'atbash', 'transposicion', 'xor' o '1'..'5').
  * @param {string|number} [opciones.clave] - Clave introducida por el usuario (si aplica).
  * @param {object} opciones.parametros - Parámetros requeridos por el algoritmo seleccionado.
- * @param {string} [opciones.rutaSalida='mensaje_encriptado.json'] - Ruta del archivo de salida.
+ * @param {string} [opciones.rutaSalida='mensaje_encriptado.txt'] - Ruta del archivo de salida.
  * @returns {object} Objeto con la información del resultado y la ruta del archivo generado.
  */
-function procesarEncriptacion({ texto, algoritmoKey, clave, parametros, rutaSalida = 'mensaje_encriptado.json' }) {
+function procesarEncriptacion({ texto, algoritmoKey, clave, parametros, rutaSalida = 'mensaje_encriptado.txt' }) {
   if (texto === undefined || texto === null || String(texto).length === 0) {
     throw new Error('El texto plano a encriptar no puede estar vacío.');
   }

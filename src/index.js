@@ -9,16 +9,19 @@ const {
   solicitarTextoMultilinea,
   mostrarExito,
   mostrarError,
+  mostrarResultadoTexto,
   C
 } = require('./interfaz');
 
 const { procesarEncriptacion } = require('./encriptacion');
 const { procesarDesencriptacion } = require('./desencriptacion');
+const { flujoManualUsuario } = require('./manual');
 
 const OPCIONES_MENU_PRINCIPAL = [
-  { id: '1', label: 'Encriptar texto', desc: 'Ingresa texto plano y genera un archivo cifrado' },
-  { id: '2', label: 'Desencriptar archivo', desc: 'Lee un archivo JSON cifrado y recupera el texto plano' },
-  { id: '3', label: 'Salir', desc: 'Cierra la aplicación' }
+  { id: '1', label: 'Encriptar texto', desc: 'Ingresa texto plano y genera un archivo .txt cifrado' },
+  { id: '2', label: 'Desencriptar archivo', desc: 'Lee un archivo .txt cifrado y recupera el texto plano' },
+  { id: '3', label: 'Manual de usuario', desc: 'Guía interactiva, explicación de algoritmos y ejemplos de uso' },
+  { id: '4', label: 'Salir', desc: 'Cierra la aplicación' }
 ];
 
 const OPCIONES_ALGORITMOS = [
@@ -33,6 +36,7 @@ async function flujoEncriptar(rl) {
   const texto = await solicitarTextoMultilinea(rl);
   if (!texto || texto.trim() === '') {
     mostrarError('El texto plano no puede estar vacío. Operación cancelada.');
+    await preguntar(rl, 'Presione [ENTER] para volver al menú principal...');
     return;
   }
 
@@ -81,8 +85,8 @@ async function flujoEncriptar(rl) {
     }
   }
 
-  const rutaSalida = await preguntar(rl, 'Nombre del archivo de salida [mensaje_encriptado.json]: ');
-  const destino = rutaSalida.trim() !== '' ? rutaSalida.trim() : 'mensaje_encriptado.json';
+  const rutaSalida = await preguntar(rl, 'Nombre del archivo de salida [mensaje_encriptado.txt]: ');
+  const destino = rutaSalida.trim() !== '' ? rutaSalida.trim() : 'mensaje_encriptado.txt';
 
   console.log(`\n${C.cyan}Procesando encriptación...${C.reset}`);
   const resultado = procesarEncriptacion({
@@ -98,12 +102,14 @@ async function flujoEncriptar(rl) {
     { label: 'Parámetros', valor: JSON.stringify(resultado.parametros) },
     { label: 'Archivo generado', valor: resultado.rutaArchivo }
   ]);
+
+  await preguntar(rl, 'Presione [ENTER] para volver al menú principal...');
 }
 
 async function flujoDesencriptar(rl) {
-  console.log(`\n${C.bold}${C.yellow}► Desencriptación de Archivo JSON${C.reset}`);
-  const rutaInput = await preguntar(rl, 'Ruta del archivo a desencriptar [mensaje_encriptado.json]: ');
-  const rutaArchivo = rutaInput.trim() !== '' ? rutaInput.trim() : 'mensaje_encriptado.json';
+  console.log(`\n${C.bold}${C.yellow}► Desencriptación de Archivo (.txt / .json)${C.reset}`);
+  const rutaInput = await preguntar(rl, 'Ruta del archivo a desencriptar [mensaje_encriptado.txt]: ');
+  const rutaArchivo = rutaInput.trim() !== '' ? rutaInput.trim() : 'mensaje_encriptado.txt';
 
   console.log(`\n${C.cyan}Procesando desencriptación...${C.reset}`);
   const resultado = procesarDesencriptacion({ rutaArchivo });
@@ -113,11 +119,9 @@ async function flujoDesencriptar(rl) {
     { label: 'Parámetros leídos', valor: JSON.stringify(resultado.parametros) }
   ]);
 
-  console.log(`${C.bold}${C.brightCyan}┌──────────────────────────────────────────────────────┐${C.reset}`);
-  console.log(`${C.bold}${C.brightCyan}│ TEXTO ORIGINAL RECUPERADO:                           │${C.reset}`);
-  console.log(`${C.bold}${C.brightCyan}├──────────────────────────────────────────────────────┤${C.reset}`);
-  console.log(`${C.white}${resultado.textoPlano}${C.reset}`);
-  console.log(`${C.bold}${C.brightCyan}└──────────────────────────────────────────────────────┘${C.reset}\n`);
+  mostrarResultadoTexto('TEXTO ORIGINAL RECUPERADO', resultado.textoPlano);
+
+  await preguntar(rl, 'Presione [ENTER] para volver al menú principal...');
 }
 
 async function iniciarAplicacion() {
@@ -140,6 +144,9 @@ async function iniciarAplicacion() {
           await flujoDesencriptar(rl);
           break;
         case '3':
+          await flujoManualUsuario(rl);
+          break;
+        case '4':
           console.log(`\n${C.brightGreen}¡Gracias por utilizar Mini Enigma! Hasta luego.${C.reset}\n`);
           continuar = false;
           rl.close();
@@ -147,6 +154,7 @@ async function iniciarAplicacion() {
       }
     } catch (error) {
       mostrarError(error.message);
+      await preguntar(rl, 'Presione [ENTER] para volver al menú principal...');
     }
   }
 }

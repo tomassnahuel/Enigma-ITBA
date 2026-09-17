@@ -12,7 +12,8 @@
  */
 function encriptar(texto, parametros) {
   validarParametros(parametros);
-  const numCol = parseInt(parametros.columnas, 10);
+  const colVal = parametros.columnas !== undefined ? parametros.columnas : parametros.clave;
+  const numCol = parseInt(colVal, 10);
   const chars = Array.from(texto);
   const total = chars.length;
 
@@ -41,7 +42,8 @@ function encriptar(texto, parametros) {
  */
 function desencriptar(textoEncriptado, parametros) {
   validarParametros(parametros);
-  const numCol = parseInt(parametros.columnas, 10);
+  const colVal = parametros.columnas !== undefined ? parametros.columnas : parametros.clave;
+  const numCol = parseInt(colVal, 10);
   const chars = Array.from(textoEncriptado);
   const total = chars.length;
 
@@ -81,11 +83,12 @@ function desencriptar(textoEncriptado, parametros) {
  * @param {object} parametros 
  */
 function validarParametros(parametros) {
-  if (!parametros || parametros.columnas === undefined || parametros.columnas === '') {
+  const colVal = parametros ? (parametros.columnas !== undefined ? parametros.columnas : parametros.clave) : undefined;
+  if (colVal === undefined || colVal === null || colVal === '') {
     throw new Error('Debe especificar el parámetro "columnas" para el algoritmo de Transposición.');
   }
-  const col = parseInt(parametros.columnas, 10);
-  if (isNaN(col) || col < 2) {
+  const colNum = Number(colVal);
+  if (!Number.isInteger(colNum) || colNum < 2) {
     throw new Error('El parámetro "columnas" debe ser un entero mayor o igual a 2.');
   }
 }

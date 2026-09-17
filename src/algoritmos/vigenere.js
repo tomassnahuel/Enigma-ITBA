@@ -8,15 +8,26 @@ const MODULO = ALFABETO_MAYUS.length; // 27
 
 /**
  * Obtiene el índice numérico [0..26] de un carácter dentro del alfabeto español.
- * Si el carácter no está en el alfabeto, devuelve -1.
+ * Normaliza letras acentuadas (excepto Ñ/ñ) para máxima tolerancia en la clave.
  * @param {string} char 
  * @returns {number}
  */
 function getIndiceAlfabeto(char) {
+  if (!char) return -1;
   const idxMayus = ALFABETO_MAYUS.indexOf(char);
   if (idxMayus !== -1) return idxMayus;
   const idxMinus = ALFABETO_MINUS.indexOf(char);
   if (idxMinus !== -1) return idxMinus;
+
+  // Normalizar acentos para la clave (ej. 'á' -> 'a', 'é' -> 'e', etc., manteniendo 'ñ'/'Ñ')
+  if (char !== 'ñ' && char !== 'Ñ') {
+    const desacentuado = char.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const idxMayusNorm = ALFABETO_MAYUS.indexOf(desacentuado);
+    if (idxMayusNorm !== -1) return idxMayusNorm;
+    const idxMinusNorm = ALFABETO_MINUS.indexOf(desacentuado);
+    if (idxMinusNorm !== -1) return idxMinusNorm;
+  }
+
   return -1;
 }
 

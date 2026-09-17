@@ -27,7 +27,9 @@ function normalizarDesplazamiento(shift) {
  * @returns {string} Texto encriptado.
  */
 function encriptar(texto, parametros) {
-  const shift = normalizarDesplazamiento(parametros.desplazamiento);
+  validarParametros(parametros);
+  const shiftVal = parametros.desplazamiento !== undefined ? parametros.desplazamiento : parametros.clave;
+  const shift = normalizarDesplazamiento(shiftVal);
   let resultado = '';
 
   for (let i = 0; i < texto.length; i++) {
@@ -57,7 +59,9 @@ function encriptar(texto, parametros) {
  * @returns {string} Texto plano original.
  */
 function desencriptar(textoEncriptado, parametros) {
-  const shift = normalizarDesplazamiento(parametros.desplazamiento);
+  validarParametros(parametros);
+  const shiftVal = parametros.desplazamiento !== undefined ? parametros.desplazamiento : parametros.clave;
+  const shift = normalizarDesplazamiento(shiftVal);
   // La desencriptación es equivalente a encriptar con el desplazamiento negativo
   return encriptar(textoEncriptado, { desplazamiento: MODULO - shift });
 }
@@ -67,10 +71,11 @@ function desencriptar(textoEncriptado, parametros) {
  * @param {object} parametros 
  */
 function validarParametros(parametros) {
-  if (!parametros || parametros.desplazamiento === undefined || parametros.desplazamiento === '') {
+  const shiftVal = parametros ? (parametros.desplazamiento !== undefined ? parametros.desplazamiento : parametros.clave) : undefined;
+  if (shiftVal === undefined || shiftVal === null || shiftVal === '') {
     throw new Error('Debe especificar el parámetro "desplazamiento" para el algoritmo César.');
   }
-  const shift = parseInt(parametros.desplazamiento, 10);
+  const shift = parseInt(shiftVal, 10);
   if (isNaN(shift)) {
     throw new Error('El parámetro "desplazamiento" debe ser un número entero válido.');
   }
@@ -85,3 +90,4 @@ module.exports = {
   ALFABETO_MAYUS,
   ALFABETO_MINUS
 };
+

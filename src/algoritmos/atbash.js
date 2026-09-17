@@ -17,7 +17,8 @@ const DIGITOS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
  * @returns {string}
  */
 function procesarAtbash(texto, parametros = {}) {
-  const invertirNum = parametros && (parametros.invertirNumeros === true || parametros.invertirNumeros === 'true' || parametros.invertirNumeros === 'si');
+  const invVal = parametros && parametros.invertirNumeros !== undefined ? String(parametros.invertirNumeros).toLowerCase().trim() : 'false';
+  const invertirNum = ['true', 'si', 's', '1', 'yes', 'y'].includes(invVal) || (parametros && parametros.invertirNumeros === true);
   let resultado = '';
 
   for (let i = 0; i < texto.length; i++) {
@@ -54,9 +55,9 @@ function desencriptar(textoEncriptado, parametros) {
 }
 
 function validarParametros(parametros) {
-  if (parametros && parametros.invertirNumeros !== undefined) {
-    const val = String(parametros.invertirNumeros).toLowerCase();
-    if (!['true', 'false', 'si', 'no', '1', '0'].includes(val)) {
+  if (parametros && parametros.invertirNumeros !== undefined && parametros.invertirNumeros !== null) {
+    const val = String(parametros.invertirNumeros).toLowerCase().trim();
+    if (!['true', 'false', 'si', 'no', 's', 'n', '1', '0', 'yes', 'y'].includes(val)) {
       throw new Error('El parámetro "invertirNumeros" de Atbash debe ser "si", "no", "true" o "false".');
     }
   }
